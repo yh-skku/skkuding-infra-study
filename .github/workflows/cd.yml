@@ -77,13 +77,17 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Setup Terraform
+        working-directory: ./files
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
+        working-directory: ./files
         run: terraform init
 
       - name: Terraform Plan
+        working-directory: ./files
         run: terraform plan
 
       - name: Terraform Apply
+        working-directory: ./files
         run: terraform apply -auto-approve

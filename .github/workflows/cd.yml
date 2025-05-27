@@ -27,3 +27,32 @@ jobs:
       - name: Sync to S3
         run: |
           aws s3 sync ./files s3://skkuding-bucket-test --delete
+
+    update-ecs:
+      name: Build and Push Docker to ECR
+      runs-on: ubuntu-latest
+      needs: s3-sync # Job 1 완료 후 실행되게 설정
+
+      permissions:
+        id-token: write
+        contents: read
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v2
+          with:
+            role-to-assume: arn:aws:iam::309272221243:role/githubaction
+            aws-region: ap-northeast-2
+
+        - name: Login to Amazon ECR
+          uses: aws-actions/amazon-ecr-login@v1
+
+        - name: Build and Push Docker image
+          uses: docker/build-push-action@v5
+          with:
+            context: .
+            push: true
+            tags: 309272221243.dkr.ecr.ap-northeast-2.amazonaws.com/skkuding/testrepo:latest

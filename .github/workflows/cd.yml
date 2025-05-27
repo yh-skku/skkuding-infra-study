@@ -56,3 +56,34 @@ jobs:
           context: .
           push: true
           tags: 309272221243.dkr.ecr.ap-northeast-2.amazonaws.com/skkuding/testrepo:latest
+
+  terraform-apply:
+    name: Terraform Apply
+    needs: [s3-sync, build-and-push-ecr] # Job 1, 2가 완료된 후 실행
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::309272221243:role/githubaction
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve

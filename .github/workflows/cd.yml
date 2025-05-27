@@ -1,0 +1,29 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  s3-sync:
+    name: Upload Static Files to S3
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # OIDC 사용을 위해 필요
+      contents: read # GitHub repo 읽기 권한
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::309272221243:role/githubaction
+          aws-region: ap-northeast-2
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync ./files s3://skkuding-bucket-test --delete

@@ -59,7 +59,7 @@ jobs:
 
   terraform-apply:
     name: Terraform Apply
-    needs: [s3-sync, build-and-push-ecr] # Job 1, 2가 완료된 후 실행
+    needs: [s3-sync, update-ecs] # Job 1, 2가 완료된 후 실행
     runs-on: ubuntu-latest
 
     permissions:

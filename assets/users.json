@@ -1,0 +1,22 @@
+[
+  {
+    "username": "abc43",
+    "password": "1234",
+    "email": "yh03061@g.skku.edu"
+  },
+  {
+    "username": "abc433",
+    "password": "1234",
+    "email": "yh03061@g.skku.edu"
+  },
+  {
+    "username": "test",
+    "password": "test",
+    "email": "test@example.com"
+  },
+  {
+    "username": "test",
+    "password": "test",
+    "email": "test@example.com"
+  }
+]

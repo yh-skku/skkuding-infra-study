@@ -22,7 +22,7 @@ data "aws_s3_bucket" "skkuding_bucket" {
 }
 
 resource "aws_s3_object" "html_file" {
-  bucket = aws_s3_bucket.skkuding_bucket.bucket
+  bucket = data.aws_s3_bucket.skkuding_bucket.bucket
   key    = "index.html"
   source = "./index.html"
   content_type = "text/html"
@@ -30,7 +30,7 @@ resource "aws_s3_object" "html_file" {
 }
 
 resource "aws_s3_object" "css_file" {
-  bucket       = aws_s3_bucket.skkuding_bucket.bucket
+  bucket       = data.aws_s3_bucket.skkuding_bucket.bucket
   key          = "style.css"
   source       = "./style.css"
   content_type = "text/css"
@@ -39,7 +39,7 @@ resource "aws_s3_object" "css_file" {
 
 
 resource "aws_s3_object" "js_file" {
-  bucket       = aws_s3_bucket.skkuding_bucket.bucket
+  bucket       = data.aws_s3_bucket.skkuding_bucket.bucket
   key          = "script.js"
   source       = "./script.js"
   content_type = "application/javascript"
@@ -47,7 +47,7 @@ resource "aws_s3_object" "js_file" {
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access" {
-  bucket = aws_s3_bucket.skkuding_bucket.id
+  bucket = data.aws_s3_bucket.skkuding_bucket.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -66,17 +66,17 @@ data "aws_iam_policy_document" "public_read_policy" {
       identifiers = ["*"]
     }
 
-    resources = ["${aws_s3_bucket.skkuding_bucket.arn}/*"]
+    resources = ["${data.aws_s3_bucket.skkuding_bucket.arn}/*"]
   }
 }
 
 resource "aws_s3_bucket_policy" "public_policy" {
-  bucket = aws_s3_bucket.skkuding_bucket.id
+  bucket = data.aws_s3_bucket.skkuding_bucket.id
   policy = data.aws_iam_policy_document.public_read_policy.json
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
-  bucket = aws_s3_bucket.skkuding_bucket.id
+  bucket = data.aws_s3_bucket.skkuding_bucket.id
 
   index_document {
     suffix = "index.html"

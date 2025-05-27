@@ -17,18 +17,8 @@ provider "aws" {
   region = "ap-northeast-2"
 }
 
-# Create a VPC
-resource "aws_vpc" "example" {
-  cidr_block = "10.0.0.0/16"
-}
-
-resource "aws_s3_bucket" "skkuding_bucket" {
+data "aws_s3_bucket" "skkuding_bucket" {
   bucket = "skkuding-bucket-test"
-
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
 }
 
 resource "aws_s3_object" "html_file" {
